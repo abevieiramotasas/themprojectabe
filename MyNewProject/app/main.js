@@ -5,85 +5,97 @@
 // Project: MyNewProject
 // ==========================================================================
 
-var MyNewProject  = MyNewProject || {};
-
+var MyNewProject = MyNewProject || {};
 
 MyNewProject.app = M.Application.design({
 
-    /* Define the entry/start page of your app. This property must be provided! */
     entryPage : 'page1',
-    page2: M.PageView.design({
-	    childViews: 'content header button',
-	    content: M.ScrollView.design({
-			     childViews: 'label',
-			     label: M.LabelView.design({
-					    contentBinding: {
-						target: MyNewProject.MyController,
-						property: 'messages'
-						}
-				    })
-		     }),
-	    header: M.ToolbarView.design({
-			    value: 'Page 2',
-	    		    showBackButton: YES
-		    }),
-	    button: M.ButtonView.design({
-			    value: 'messages',
-	    		    events: {
-				    tap: {
-						target: MyNewProject.MyController,
-						action: 'teste'
-		    }
-			    }
+
+    page2 : M.PageView.design({
+	childViews : 'header content button footer',
+
+	content : M.ScrollView.design({
+	    childViews : 'form_grid tabela',
+	    form_grid : M.GridView.design({
+		childViews : 'label form',
+		layout : M.TWO_COLUMNS,
+
+		label : M.LabelView.design({
+		    value : "Island Identifier"
+		}),
+		form : M.FormView.design({
+		    childViews : 'destinationId',
+		    destinationId : M.TextFieldView.design({
+			initialText : "Destination id"
 		    })
+		})
+
+	    }),
+
+	    tabela : M.TableView.design({
+		header : {
+		    data : [ 'Autor', 'Mensagem' ],
+		    cols : [ '20%', '80%' ]
+		},
+		contentBinding : {
+		    target : MyNewProject.MyController,
+		    property : 'messagesTable'
+		}
+	    })
+
+	}),
+
+	header : M.ToolbarView.design({
+	    value : 'Messages',
+	    showBackButton : YES
+	}),
+
+	button : M.ButtonView.design({
+	    value : 'Load Messages',
+	    events : {
+		tap : {
+		    target : MyNewProject.MyController,
+		    action : 'loadMessages'
+		}
+	    }
+	}),
+
+	footer : M.ToolbarView.design({
+	    value : 'Shout2Me',
+	    anchorLocation : M.BOTTOM
+	})
     }),
-    page1: M.PageView.design({
 
-        childViews: 'header content footer',
+    page1 : M.PageView.design({
 
-        header: M.ToolbarView.design({
-            value: 'HEADER',
-            anchorLocation: M.TOP
-        }),
+	childViews : 'header content footer',
 
-	content: M.ScrollView.design({
-            childViews: 'button label',
-            label: M.LabelView.design({
-                value: 'Bem vindos ao meu projeto de estudo'
-            }),
-	    button: M.ButtonView.design({
-			    value: 'goto page',
-	    			events: {
-					tap: {
-						     target: MyNewProject.MyController,
-	    					action: 'gotopage'
-					     }
-				}
-		    })
-        }),
+	header : M.ToolbarView.design({
+	    value : 'Shout2Me',
+	    anchorLocation : M.TOP
+	}),
 
-        footer: M.ToolbarView.design({
-            value: 'FOOTER',
-            anchorLocation: M.BOTTOM
-        })
-    
+	content : M.ScrollView.design({
+	    childViews : 'label button',
+	    label : M.LabelView.design({
+		value : 'Bem vindos ao meu projeto de estudo'
+	    }),
+	    button : M.ButtonView.design({
+		value : 'Messages',
+		events : {
+		    tap : {
+			target : MyNewProject.MyController,
+			action : 'goToPage2'
+		    }
+		}
+	    })
+	}),
+
+	footer : M.ToolbarView.design({
+	    value : 'Shout2Me',
+	    anchorLocation : M.BOTTOM
+	})
+
     })
 
 });
-M.Request.init({
-	 	url: '/shout2me/message/getall?limit=100&base_date_in_millis=1340049979641&up=false&destination_id=10001',	
-	 	method: 'GET',
-	 	isJSON: YES,
-	 	onSucess: function(data, msg, xhr) {
-				MyNewProject.app.content = M.ScrollView.design({
-					childViews: 'label',
-					label: M.LabelView.design({
-						value: "Teste"
-					})
-				});				
-				console.log(data);
-		},
-	 	onError: function(xhr, msg) {
-				                         console.log('Error: '+msg);
-							                  }
-         }).send();
