@@ -6,8 +6,8 @@
     "minify": false,
     "proxies": [
         {
-            "baseUrl": "http://your.server.com",
-            "proxyAlias": "myServer"
+            "baseUrl": "http://shout2megae.appspot.com",
+            "proxyAlias": "shout2me"
         },
         {
             "baseUrl": "http://your.server2.com",
