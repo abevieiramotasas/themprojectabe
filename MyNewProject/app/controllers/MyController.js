@@ -19,6 +19,37 @@ MyNewProject.MyController = M.Controller.extend({
 	}
     },
 
+    loadMap : function() {
+	var map = M.ViewManager.getView('page1', 'map');
+	map.initMap({
+	    callbacks : {
+		success : {
+		    target : this,
+		    action : function() {
+			var service = new google.maps.places.PlacesService(
+				map.map);
+			var request = {
+			    location : new google.maps.LatLng(-33.8665433,
+				    151.1956316),
+			    radius : '500',
+			    types : [ 'store' ]
+			};
+			service.search(request, function(results, status) {
+			    console.log('STATUS: ' + status);
+			    console.log('RESULTS: ' + results);
+			});
+		    }
+		},
+		error : {
+		    target : this,
+		    action : function() {
+			console.log('Err');
+		    }
+		}
+	    }
+	});
+    },
+
     // navegação
 
     goToPage2 : function() {
@@ -48,7 +79,9 @@ MyNewProject.MyController = M.Controller.extend({
 		    }
 		}).done(function(resultado, msg, xhr) {
 	    var messages = makeTable(resultado);
-	    var table = {content : []};
+	    var table = {
+		content : []
+	    };
 	    table.content = messages;
 	    that.set('messagesTable', table);
 	});
@@ -73,9 +106,10 @@ function getMessagesPath(dest_id, base_date, up, limit) {
 function makeTable(data) {
     result = [];
     ms = data.message;
-    for(var i = 0; i < ms.length; i++) {
-	result.push([ms[i].author_name, ms[i].text]);
-    };
+    for ( var i = 0; i < ms.length; i++) {
+	result.push([ ms[i].author_name, ms[i].text ]);
+    }
+    ;
     console.log(result);
     return result;
 }

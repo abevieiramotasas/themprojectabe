@@ -16,13 +16,16 @@ MyNewProject.app = M.Application.design({
 
 	content : M.ScrollView.design({
 	    childViews : 'form_grid tabela',
+
 	    form_grid : M.GridView.design({
 		childViews : 'label form',
+
 		layout : M.TWO_COLUMNS,
 
 		label : M.LabelView.design({
 		    value : "Island Identifier"
 		}),
+
 		form : M.FormView.design({
 		    childViews : 'destinationId',
 		    destinationId : M.TextFieldView.design({
@@ -76,10 +79,32 @@ MyNewProject.app = M.Application.design({
 	}),
 
 	content : M.ScrollView.design({
-	    childViews : 'label button',
+	    childViews : 'label button loadMap map',
+
 	    label : M.LabelView.design({
 		value : 'Bem vindos ao meu projeto de estudo'
 	    }),
+
+	    map : M.MapView.design({
+		//isInset: YES,
+
+                showMapTypeControl: YES,
+
+                showStreetViewControl: NO,
+
+                showNavigationControl: YES,
+
+                mapType: M.MAP_ROADMAP,
+
+                zoomLevel: 10,
+
+                isDraggable: YES,
+		initialLocation : M.Location.extend({
+		    latitude : 48.813338,
+		    longitude : 9.178463
+		})
+	    }),
+
 	    button : M.ButtonView.design({
 		value : 'Messages',
 		events : {
@@ -88,8 +113,18 @@ MyNewProject.app = M.Application.design({
 			action : 'goToPage2'
 		    }
 		}
+	    }),
+	    loadMap : M.ButtonView.design({
+		value : 'Carregar Mapa',
+		events : {
+		    tap : {
+			target : MyNewProject.MyController,
+			action : 'loadMap'
+		    }
+		}
 	    })
 	}),
+	
 
 	footer : M.ToolbarView.design({
 	    value : 'Shout2Me',
